@@ -4,24 +4,24 @@ if (!$role) return;
 
 $menuMap = [
     'admin' => [
-        ['label' => 'Dashboard',     'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
+        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
         ['label' => 'Usuarios',      'icon' => 'bi-people',       'page' => 'users'],
-        ['label' => 'Categor�as',    'icon' => 'bi-tags',         'page' => 'categories'],
+        ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'categories'],
         ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'pending-courses'],
-        ['label' => 'Estad�sticas',  'icon' => 'bi-bar-chart',    'page' => 'stats'],
+        ['label' => 'Estadisticas',  'icon' => 'bi-bar-chart',    'page' => 'stats'],
     ],
     'moderator' => [
-        ['label' => 'Dashboard',     'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
+        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
         ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'pending-courses'],
-        ['label' => 'Categor�as',    'icon' => 'bi-tags',         'page' => 'categories'],
+        ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'categories'],
     ],
     'teacher' => [
-        ['label' => 'Dashboard',     'icon' => 'bi-speedometer2', 'page' => 'teacher-dashboard'],
+        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'teacher-dashboard'],
         ['label' => 'Mis Cursos',    'icon' => 'bi-collection',   'page' => 'teacher-courses'],
         ['label' => 'Ganancias',     'icon' => 'bi-cash-stack',   'page' => 'earnings'],
     ],
     'student' => [
-        ['label' => 'Dashboard',     'icon' => 'bi-speedometer2', 'page' => 'student-dashboard'],
+        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'student-dashboard'],
         ['label' => 'Mis Cursos',    'icon' => 'bi-book',         'page' => 'my-courses'],
     ],
 ];

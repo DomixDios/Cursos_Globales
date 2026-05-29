@@ -103,20 +103,20 @@ $(function () {
                 $.each(cats, function (i, c) {
                     html += '<tr>' +
                         '<td>' + c.id + '</td>' +
-                        '<td>' + c.name + '</td>' +
+                        '<td>' + c.nombre + '</td>' +
                         '<td>' + c.slug + '</td>' +
-                        '<td>' + (c.is_active == 1 ? '<span class="badge bg-success">Si</span>' : '<span class="badge bg-secondary">No</span>') + '</td>' +
-                        '<td>' + (c.course_count || 0) + '</td>' +
+                        '<td><span class="badge bg-success">Si</span></td>' +
+                        '<td>' + (c.total_cursos || 0) + '</td>' +
                         '<td>' +
-                        '  <button class="btn btn-sm btn-outline-primary edit-cat" data-id="' + c.id + '" data-name="' + c.name + '" data-slug="' + c.slug + '" data-desc="' + (c.description || '') + '"><i class="bi bi-pencil"></i></button>' +
-                        '  <button class="btn btn-sm btn-outline-danger delete-cat" data-id="' + c.id + '" data-name="' + c.name + '"><i class="bi bi-trash"></i></button>' +
+                        '  <button class="btn btn-sm btn-outline-primary edit-cat" data-id="' + c.id + '" data-name="' + c.nombre + '" data-slug="' + c.slug + '" data-desc="' + (c.descripcion || '') + '"><i class="bi bi-pencil"></i></button>' +
+                        '  <button class="btn btn-sm btn-outline-danger delete-cat" data-id="' + c.id + '" data-name="' + c.nombre + '"><i class="bi bi-trash"></i></button>' +
                         '</td>' +
                         '</tr>';
                 });
                 $('#categoriesTable').html(html);
                 var opts = '<option value="">Seleccionar...</option>';
                 $.each(cats, function (i, c) {
-                    if (c.is_active) opts += '<option value="' + c.id + '">' + c.name + '</option>';
+                    if (c.activo) opts += '<option value="' + c.id + '">' + c.nombre + '</option>';
                 });
                 $('#catSelect, .cat-select').each(function () {
                     var val = $(this).val();
@@ -170,9 +170,9 @@ $(function () {
                 var html = '';
                 $.each(courses, function (i, c) {
                     html += '<tr>' +
-                        '<td><a href="?page=course-detail&id=' + c.id + '" class="fw-semibold text-decoration-none">' + c.title + '</a></td>' +
-                        '<td>' + c.teacher_name + '</td>' +
-                        '<td>' + c.created_at + '</td>' +
+                        '<td><a href="?page=course-detail&id=' + c.id + '" class="fw-semibold text-decoration-none">' + c.titulo + '</a></td>' +
+                        '<td>' + c.profesor_nombre + '</td>' +
+                        '<td>' + c.creado_en + '</td>' +
                         '<td>' +
                         '  <button class="btn btn-sm btn-success approve-course" data-id="' + c.id + '"><i class="bi bi-check-lg"></i></button>' +
                         '  <button class="btn btn-sm btn-danger reject-course" data-id="' + c.id + '"><i class="bi bi-x-lg"></i></button>' +
@@ -217,7 +217,7 @@ $(function () {
                 new Chart(document.getElementById('usersChart'), {
                     type: 'bar',
                     data: {
-                        labels: data.map(function (d) { return d.month; }),
+                        labels: data.map(function (d) { return d.mes; }),
                         datasets: [{ label: 'Usuarios', data: data.map(function (d) { return d.total; }), backgroundColor: '#0d6efd' }]
                     }
                 });
@@ -230,7 +230,7 @@ $(function () {
                 new Chart(document.getElementById('revenueChart'), {
                     type: 'line',
                     data: {
-                        labels: data.map(function (d) { return d.month; }),
+                        labels: data.map(function (d) { return d.mes; }),
                         datasets: [{ label: 'Ingresos', data: data.map(function (d) { return d.total; }), borderColor: '#198754', fill: false }]
                     }
                 });
