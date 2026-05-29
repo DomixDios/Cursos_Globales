@@ -26,9 +26,9 @@
                 <div class="mb-3">
                     <label class="form-label small">Rol</label>
                     <select name="role" id="userRole" class="form-select">
-                        <option value="student">Estudiante</option>
-                        <option value="teacher">Docente</option>
-                        <option value="moderator">Moderador</option>
+                        <option value="estudiante">Estudiante</option>
+                        <option value="profesor">Docente</option>
+                        <option value="moderador">Moderador</option>
                         <option value="admin">Administrador</option>
                     </select>
                 </div>

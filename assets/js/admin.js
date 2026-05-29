@@ -41,13 +41,13 @@ $(function () {
                 $.each(users, function (i, u) {
                     html += '<tr>' +
                         '<td>' + u.id + '</td>' +
-                        '<td>' + u.full_name + '</td>' +
+                        '<td>' + u.nombre_completo + '</td>' +
                         '<td>' + u.email + '</td>' +
-                        '<td><span class="badge bg-' + (u.role === 'admin' ? 'danger' : u.role === 'moderator' ? 'warning text-dark' : u.role === 'teacher' ? 'info text-dark' : 'secondary') + '">' + u.role + '</span></td>' +
-                        '<td>' + (u.is_active == 1 ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-secondary">Inactivo</span>') + '</td>' +
+                        '<td><span class="badge bg-' + (u.rol === 'admin' ? 'danger' : u.rol === 'moderador' ? 'warning text-dark' : u.rol === 'profesor' ? 'info text-dark' : 'secondary') + '">' + u.rol + '</span></td>' +
+                        '<td>' + (u.activo == 1 ? '<span class="badge bg-success">Activo</span>' : '<span class="badge bg-secondary">Inactivo</span>') + '</td>' +
                         '<td>' +
-                        '  <button class="btn btn-sm btn-outline-primary edit-user" data-id="' + u.id + '" data-name="' + u.full_name + '" data-email="' + u.email + '" data-role="' + u.role + '"><i class="bi bi-pencil"></i></button>' +
-                        '  <button class="btn btn-sm btn-outline-' + (u.is_active == 1 ? 'secondary' : 'success') + ' toggle-user" data-id="' + u.id + '" data-active="' + u.is_active + '"><i class="bi bi-' + (u.is_active == 1 ? 'pause' : 'play') + '"></i></button>' +
+                        '  <button class="btn btn-sm btn-outline-primary edit-user" data-id="' + u.id + '" data-name="' + u.nombre_completo + '" data-email="' + u.email + '" data-role="' + u.rol + '"><i class="bi bi-pencil"></i></button>' +
+                        '  <button class="btn btn-sm btn-outline-' + (u.activo == 1 ? 'secondary' : 'success') + ' toggle-user" data-id="' + u.id + '" data-active="' + u.activo + '"><i class="bi bi-' + (u.activo == 1 ? 'pause' : 'play') + '"></i></button>' +
                         '</td>' +
                         '</tr>';
                 });

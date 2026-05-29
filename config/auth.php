@@ -13,7 +13,7 @@ function currentUser(): ?array
     static $user = null;
     if ($user === null) {
         $pdo = getDB();
-        $stmt = $pdo->prepare('SELECT id, full_name, email, role, avatar, bio FROM users WHERE id = ? AND is_active = 1');
+        $stmt = $pdo->prepare('SELECT id, nombre_completo, email, rol, avatar, bio FROM usuarios WHERE id = ? AND activo = 1');
         $stmt->execute([$_SESSION['user_id']]);
         $user = $stmt->fetch() ?: null;
     }
@@ -23,13 +23,13 @@ function currentUser(): ?array
 function currentUserRole(): ?string
 {
     $u = currentUser();
-    return $u['role'] ?? null;
+    return $u['rol'] ?? null;
 }
 
 function login(string $email, string $password): array
 {
     $pdo = getDB();
-    $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ? AND is_active = 1');
+    $stmt = $pdo->prepare('SELECT * FROM usuarios WHERE email = ? AND activo = 1');
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 

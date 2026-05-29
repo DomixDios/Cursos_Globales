@@ -1,17 +1,17 @@
 <?php
-$pageTitle = 'Catálogo';
+$pageTitle = 'Catï¿½logo';
 ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0">Catálogo de Cursos</h2>
+    <h2 class="mb-0">Catï¿½logo de Cursos</h2>
     <div class="d-flex gap-2">
         <select id="filterCategory" class="form-select form-select-sm" style="width:auto;">
-            <option value="">Todas las categorías</option>
+            <option value="">Todas las categorï¿½as</option>
         </select>
         <select id="filterLevel" class="form-select form-select-sm" style="width:auto;">
             <option value="">Todos los niveles</option>
-            <option value="beginner">Principiante</option>
-            <option value="intermediate">Intermedio</option>
-            <option value="advanced">Avanzado</option>
+            <option value="principiante">Principiante</option>
+            <option value="intermedio">Intermedio</option>
+            <option value="avanzado">Avanzado</option>
         </select>
         <input type="search" id="searchInput" class="form-control form-control-sm" placeholder="Buscar..." style="width:200px;">
     </div>

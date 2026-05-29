@@ -1,160 +1,158 @@
 -- ============================================================
--- Cursos Globales — SQLite Database Schema
--- ============================================================
--- Ejecutar: sqlite3 storage/cursos_globales.db < db/schema.sql
+-- Cursos Globales - Esquema de Base de Datos SQLite
 -- ============================================================
 
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS usuarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    full_name TEXT NOT NULL,
+    nombre_completo TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    role TEXT NOT NULL DEFAULT 'student'
-        CHECK(role IN ('admin', 'moderator', 'teacher', 'student')),
+    rol TEXT NOT NULL DEFAULT 'estudiante'
+        CHECK(rol IN ('admin', 'moderador', 'profesor', 'estudiante')),
     avatar TEXT,
     bio TEXT,
-    is_active INTEGER NOT NULL DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    activo INTEGER NOT NULL DEFAULT 1,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS categories (
+CREATE TABLE IF NOT EXISTS categorias (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    nombre TEXT NOT NULL,
     slug TEXT NOT NULL UNIQUE,
-    description TEXT,
-    icon TEXT,
-    is_active INTEGER NOT NULL DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    descripcion TEXT,
+    icono TEXT,
+    activo INTEGER NOT NULL DEFAULT 1,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS courses (
+CREATE TABLE IF NOT EXISTS cursos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    teacher_id INTEGER NOT NULL,
-    category_id INTEGER,
-    title TEXT NOT NULL,
+    profesor_id INTEGER NOT NULL,
+    categoria_id INTEGER,
+    titulo TEXT NOT NULL,
     slug TEXT NOT NULL UNIQUE,
-    description TEXT,
-    short_description TEXT,
-    thumbnail TEXT,
-    price REAL NOT NULL DEFAULT 0,
-    level TEXT DEFAULT 'beginner'
-        CHECK(level IN ('beginner', 'intermediate', 'advanced', 'all')),
-    status TEXT DEFAULT 'draft'
-        CHECK(status IN ('draft', 'pending', 'approved', 'rejected', 'published')),
-    is_featured INTEGER DEFAULT 0,
-    rejection_reason TEXT,
-    approved_by INTEGER,
-    approved_at DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
-    FOREIGN KEY (approved_by) REFERENCES users(id) ON DELETE SET NULL
+    descripcion TEXT,
+    descripcion_corta TEXT,
+    miniatura TEXT,
+    precio REAL NOT NULL DEFAULT 0,
+    nivel TEXT DEFAULT 'principiante'
+        CHECK(nivel IN ('principiante', 'intermedio', 'avanzado', 'todos')),
+    estado TEXT DEFAULT 'borrador'
+        CHECK(estado IN ('borrador', 'pendiente', 'aprobado', 'rechazado', 'publicado')),
+    destacado INTEGER DEFAULT 0,
+    motivo_rechazo TEXT,
+    aprobado_por INTEGER,
+    aprobado_en DATETIME,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (profesor_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL,
+    FOREIGN KEY (aprobado_por) REFERENCES usuarios(id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS modules (
+CREATE TABLE IF NOT EXISTS modulos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    course_id INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    description TEXT,
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+    curso_id INTEGER NOT NULL,
+    titulo TEXT NOT NULL,
+    descripcion TEXT,
+    orden INTEGER NOT NULL DEFAULT 0,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS classes (
+CREATE TABLE IF NOT EXISTS clases (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    module_id INTEGER NOT NULL,
-    title TEXT NOT NULL,
-    description TEXT,
-    video_url TEXT,
-    duration INTEGER DEFAULT 0,
-    content_type TEXT DEFAULT 'video'
-        CHECK(content_type IN ('video', 'article', 'quiz', 'resource')),
-    content_text TEXT,
-    sort_order INTEGER NOT NULL DEFAULT 0,
-    is_free INTEGER DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (module_id) REFERENCES modules(id) ON DELETE CASCADE
+    modulo_id INTEGER NOT NULL,
+    titulo TEXT NOT NULL,
+    descripcion TEXT,
+    url_video TEXT,
+    duracion INTEGER DEFAULT 0,
+    tipo_contenido TEXT DEFAULT 'video'
+        CHECK(tipo_contenido IN ('video', 'articulo', 'cuestionario', 'recurso')),
+    texto_contenido TEXT,
+    orden INTEGER NOT NULL DEFAULT 0,
+    gratuito INTEGER DEFAULT 0,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (modulo_id) REFERENCES modulos(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS enrollments (
+CREATE TABLE IF NOT EXISTS inscripciones (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    course_id INTEGER NOT NULL,
-    progress REAL DEFAULT 0,
-    enrolled_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    completed_at DATETIME,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-    UNIQUE(user_id, course_id)
+    usuario_id INTEGER NOT NULL,
+    curso_id INTEGER NOT NULL,
+    progreso REAL DEFAULT 0,
+    inscrito_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completado_en DATETIME,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE,
+    UNIQUE(usuario_id, curso_id)
 );
 
-CREATE TABLE IF NOT EXISTS class_progress (
+CREATE TABLE IF NOT EXISTS progreso_clases (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    enrollment_id INTEGER NOT NULL,
-    class_id INTEGER NOT NULL,
-    is_completed INTEGER DEFAULT 0,
-    completed_at DATETIME,
-    FOREIGN KEY (enrollment_id) REFERENCES enrollments(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE,
-    UNIQUE(enrollment_id, class_id)
+    inscripcion_id INTEGER NOT NULL,
+    clase_id INTEGER NOT NULL,
+    completado INTEGER DEFAULT 0,
+    completado_en DATETIME,
+    FOREIGN KEY (inscripcion_id) REFERENCES inscripciones(id) ON DELETE CASCADE,
+    FOREIGN KEY (clase_id) REFERENCES clases(id) ON DELETE CASCADE,
+    UNIQUE(inscripcion_id, clase_id)
 );
 
-CREATE TABLE IF NOT EXISTS reviews (
+CREATE TABLE IF NOT EXISTS resenas (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    course_id INTEGER NOT NULL,
-    rating INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5),
-    comment TEXT,
-    is_approved INTEGER DEFAULT 0,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-    UNIQUE(user_id, course_id)
+    usuario_id INTEGER NOT NULL,
+    curso_id INTEGER NOT NULL,
+    puntuacion INTEGER NOT NULL CHECK(puntuacion >= 1 AND puntuacion <= 5),
+    comentario TEXT,
+    aprobado INTEGER DEFAULT 0,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE,
+    UNIQUE(usuario_id, curso_id)
 );
 
-CREATE TABLE IF NOT EXISTS comments (
+CREATE TABLE IF NOT EXISTS comentarios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    course_id INTEGER NOT NULL,
-    class_id INTEGER,
-    parent_id INTEGER,
-    content TEXT NOT NULL,
-    is_approved INTEGER DEFAULT 1,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL,
-    FOREIGN KEY (parent_id) REFERENCES comments(id) ON DELETE CASCADE
+    usuario_id INTEGER NOT NULL,
+    curso_id INTEGER NOT NULL,
+    clase_id INTEGER,
+    padre_id INTEGER,
+    contenido TEXT NOT NULL,
+    aprobado INTEGER DEFAULT 1,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (curso_id) REFERENCES cursos(id) ON DELETE CASCADE,
+    FOREIGN KEY (clase_id) REFERENCES clases(id) ON DELETE SET NULL,
+    FOREIGN KEY (padre_id) REFERENCES comentarios(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS payments (
+CREATE TABLE IF NOT EXISTS pagos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    enrollment_id INTEGER NOT NULL UNIQUE,
-    amount REAL NOT NULL,
-    teacher_earnings REAL NOT NULL,
-    commission REAL NOT NULL DEFAULT 0,
-    payment_method TEXT DEFAULT 'transfer',
-    status TEXT DEFAULT 'completed'
-        CHECK(status IN ('pending', 'completed', 'refunded')),
-    paid_to_teacher INTEGER DEFAULT 0,
-    paid_at DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (enrollment_id) REFERENCES enrollments(id) ON DELETE CASCADE
+    inscripcion_id INTEGER NOT NULL UNIQUE,
+    monto REAL NOT NULL,
+    ganancias_profesor REAL NOT NULL,
+    comision REAL NOT NULL DEFAULT 0,
+    metodo_pago TEXT DEFAULT 'transferencia',
+    estado TEXT DEFAULT 'completado'
+        CHECK(estado IN ('pendiente', 'completado', 'reembolsado')),
+    pagado_profesor INTEGER DEFAULT 0,
+    pagado_en DATETIME,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (inscripcion_id) REFERENCES inscripciones(id) ON DELETE CASCADE
 );
 
-CREATE INDEX IF NOT EXISTS idx_courses_teacher   ON courses(teacher_id);
-CREATE INDEX IF NOT EXISTS idx_courses_status    ON courses(status);
-CREATE INDEX IF NOT EXISTS idx_courses_category  ON courses(category_id);
-CREATE INDEX IF NOT EXISTS idx_modules_course    ON modules(course_id);
-CREATE INDEX IF NOT EXISTS idx_classes_module    ON classes(module_id);
-CREATE INDEX IF NOT EXISTS idx_enrollments_user  ON enrollments(user_id);
-CREATE INDEX IF NOT EXISTS idx_enrollments_course ON enrollments(course_id);
-CREATE INDEX IF NOT EXISTS idx_class_progress_enrollment ON class_progress(enrollment_id);
-CREATE INDEX IF NOT EXISTS idx_reviews_course    ON reviews(course_id);
-CREATE INDEX IF NOT EXISTS idx_comments_course   ON comments(course_id);
-CREATE INDEX IF NOT EXISTS idx_comments_class    ON comments(class_id);
-CREATE INDEX IF NOT EXISTS idx_payments_enrollment ON payments(enrollment_id);
+CREATE INDEX IF NOT EXISTS idx_cursos_profesor   ON cursos(profesor_id);
+CREATE INDEX IF NOT EXISTS idx_cursos_estado     ON cursos(estado);
+CREATE INDEX IF NOT EXISTS idx_cursos_categoria  ON cursos(categoria_id);
+CREATE INDEX IF NOT EXISTS idx_modulos_curso     ON modulos(curso_id);
+CREATE INDEX IF NOT EXISTS idx_clases_modulo     ON clases(modulo_id);
+CREATE INDEX IF NOT EXISTS idx_inscripciones_usuario  ON inscripciones(usuario_id);
+CREATE INDEX IF NOT EXISTS idx_inscripciones_curso ON inscripciones(curso_id);
+CREATE INDEX IF NOT EXISTS idx_progreso_clases_inscripcion ON progreso_clases(inscripcion_id);
+CREATE INDEX IF NOT EXISTS idx_resenas_curso     ON resenas(curso_id);
+CREATE INDEX IF NOT EXISTS idx_comentarios_curso ON comentarios(curso_id);
+CREATE INDEX IF NOT EXISTS idx_comentarios_clase  ON comentarios(clase_id);
+CREATE INDEX IF NOT EXISTS idx_pagos_inscripcion ON pagos(inscripcion_id);

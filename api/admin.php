@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/session.php';
 require_once __DIR__ . '/../config/auth.php';
 header('Content-Type: application/json');
 
-if (!isLoggedIn() || !in_array(currentUserRole(), ['admin','moderator'])) {
+if (!isLoggedIn() || !in_array(currentUserRole(), ['admin','moderador'])) {
     http_response_code(403);     echo json_encode(['error' => 'No autorizado'], JSON_INVALID_UTF8_SUBSTITUTE); exit;
 }
 
@@ -12,82 +12,74 @@ $pdo = getDB();
 $action = $_GET['action'] ?? '';
 $isAdmin = currentUserRole() === 'admin';
 
-// ── Dashboard stats ──
 if ($action === 'dashboard') {
     echo json_encode([
-        'users'    => (int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn(),
-        'courses'  => (int)$pdo->query('SELECT COUNT(*) FROM courses')->fetchColumn(),
-        'pending'  => (int)$pdo->query("SELECT COUNT(*) FROM courses WHERE status = 'pending'")->fetchColumn(),
-        'revenue'  => (float)$pdo->query('SELECT COALESCE(SUM(amount),0) FROM payments')->fetchColumn(),
+        'users'    => (int)$pdo->query('SELECT COUNT(*) FROM usuarios')->fetchColumn(),
+        'courses'  => (int)$pdo->query('SELECT COUNT(*) FROM cursos')->fetchColumn(),
+        'pending'  => (int)$pdo->query("SELECT COUNT(*) FROM cursos WHERE estado = 'pendiente'")->fetchColumn(),
+        'revenue'  => (float)$pdo->query('SELECT COALESCE(SUM(monto),0) FROM pagos')->fetchColumn(),
     ]);
     exit;
 }
 
-// ── List users ──
 if ($action === 'users') {
-    $stmt = $pdo->query('SELECT id, full_name, email, role, is_active, created_at FROM users ORDER BY created_at DESC');
+    $stmt = $pdo->query('SELECT id, nombre_completo, email, rol, activo, creado_en FROM usuarios ORDER BY creado_en DESC');
     echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
-// ── Save user (create/update) ──
 if ($action === 'user-save' && $isAdmin) {
     $id   = (int)($_POST['id'] ?? 0);
     $name = $_POST['full_name'] ?? '';
     $email = $_POST['email'] ?? '';
-    $role = $_POST['role'] ?? 'student';
+    $role = $_POST['role'] ?? 'estudiante';
     $pass = $_POST['password'] ?? '';
 
     if ($id) {
-        $sql = 'UPDATE users SET full_name = ?, email = ?, role = ?, updated_at = datetime() WHERE id = ?';
+        $sql = 'UPDATE usuarios SET nombre_completo = ?, email = ?, rol = ?, actualizado_en = datetime() WHERE id = ?';
         $params = [$name, $email, $role, $id];
         if (!empty($pass)) {
-            $sql = 'UPDATE users SET full_name = ?, email = ?, role = ?, password = ?, updated_at = datetime() WHERE id = ?';
+            $sql = 'UPDATE usuarios SET nombre_completo = ?, email = ?, rol = ?, password = ?, actualizado_en = datetime() WHERE id = ?';
             $params = [$name, $email, $role, password_hash($pass, PASSWORD_DEFAULT), $id];
         }
         $pdo->prepare($sql)->execute($params);
     } else {
-        $stmt = $pdo->prepare('INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO usuarios (nombre_completo, email, password, rol) VALUES (?, ?, ?, ?)');
         $stmt->execute([$name, $email, password_hash($pass ?: 'password123', PASSWORD_DEFAULT), $role]);
     }
     echo json_encode(['success' => true]);
     exit;
 }
 
-// ── Toggle user active ──
 if ($action === 'user-toggle' && $isAdmin) {
     $id = (int)($_POST['id'] ?? 0);
-    $pdo->prepare('UPDATE users SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END, updated_at = datetime() WHERE id = ?')->execute([$id]);
+    $pdo->prepare('UPDATE usuarios SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END, actualizado_en = datetime() WHERE id = ?')->execute([$id]);
     echo json_encode(['success' => true]);
     exit;
 }
 
-// ── Approve/Reject course ──
 if ($action === 'approve' || $action === 'reject') {
     $id = (int)($_POST['id'] ?? 0);
-    $status = $action === 'approve' ? 'approved' : 'rejected';
+    $status = $action === 'approve' ? 'aprobado' : 'rechazado';
     $reason = $_POST['reason'] ?? '';
-    $stmt = $pdo->prepare("UPDATE courses SET status = ?, rejection_reason = ?, approved_by = ?, approved_at = datetime() WHERE id = ?");
+    $stmt = $pdo->prepare("UPDATE cursos SET estado = ?, motivo_rechazo = ?, aprobado_por = ?, aprobado_en = datetime() WHERE id = ?");
     $stmt->execute([$status, $reason, $_SESSION['user_id'], $id]);
     echo json_encode(['success' => true]);
     exit;
 }
 
-// ── Pending courses ──
 if ($action === 'pending-courses') {
-    $stmt = $pdo->query("SELECT c.*, u.full_name AS teacher_name FROM courses c JOIN users u ON u.id = c.teacher_id WHERE c.status = 'pending' ORDER BY c.created_at ASC");
+    $stmt = $pdo->query("SELECT c.*, u.nombre_completo AS profesor_nombre FROM cursos c JOIN usuarios u ON u.id = c.profesor_id WHERE c.estado = 'pendiente' ORDER BY c.creado_en ASC");
     echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
-// ── Category list ──
 if ($action === 'category-list') {
-    $stmt = $pdo->query("SELECT c.*, (SELECT COUNT(*) FROM courses WHERE category_id = c.id) AS course_count FROM categories c WHERE c.is_active = 1 ORDER BY c.name ASC");
+    $stmt = $pdo->query("SELECT c.*, (SELECT COUNT(*) FROM cursos WHERE categoria_id = c.id) AS total_cursos FROM categorias c WHERE c.activo = 1 ORDER BY c.nombre ASC");
     echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
-// ── Save category ──
 if ($action === 'category-save') {
     $id   = (int)($_POST['id'] ?? 0);
     $name = $_POST['name'] ?? '';
@@ -95,43 +87,39 @@ if ($action === 'category-save') {
     $desc = $_POST['description'] ?? '';
 
     if ($id) {
-        $pdo->prepare('UPDATE categories SET name = ?, slug = ?, description = ? WHERE id = ?')->execute([$name, $slug, $desc, $id]);
+        $pdo->prepare('UPDATE categorias SET nombre = ?, slug = ?, descripcion = ? WHERE id = ?')->execute([$name, $slug, $desc, $id]);
     } else {
-        $pdo->prepare('INSERT OR IGNORE INTO categories (name, slug, description) VALUES (?, ?, ?)')->execute([$name, $slug, $desc]);
+        $pdo->prepare('INSERT OR IGNORE INTO categorias (nombre, slug, descripcion) VALUES (?, ?, ?)')->execute([$name, $slug, $desc]);
     }
     echo json_encode(['success' => true]);
     exit;
 }
 
-// ── Toggle category active ──
 if ($action === 'category-toggle') {
     $id = (int)($_POST['id'] ?? 0);
-    $pdo->prepare('UPDATE categories SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END WHERE id = ?')->execute([$id]);
+    $pdo->prepare('UPDATE categorias SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END WHERE id = ?')->execute([$id]);
     echo json_encode(['success' => true]);
     exit;
 }
 
-// ── Delete category (logical) ──
 if ($action === 'category-delete') {
     $id = (int)($_POST['id'] ?? 0);
-    $pdo->prepare('UPDATE categories SET is_active = 0 WHERE id = ?')->execute([$id]);
+    $pdo->prepare('UPDATE categorias SET activo = 0 WHERE id = ?')->execute([$id]);
     echo json_encode(['success' => true]);
     exit;
 }
 
-// ── Stats: users per month ──
 if ($action === 'stats-users') {
-    $stmt = $pdo->query("SELECT strftime('%Y-%m', created_at) AS month, COUNT(*) AS total FROM users GROUP BY month ORDER BY month ASC LIMIT 12");
+    $stmt = $pdo->query("SELECT strftime('%Y-%m', creado_en) AS mes, COUNT(*) AS total FROM usuarios GROUP BY mes ORDER BY mes ASC LIMIT 12");
     echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
-// ── Stats: revenue per month ──
 if ($action === 'stats-revenue') {
-    $stmt = $pdo->query("SELECT strftime('%Y-%m', p.created_at) AS month, COALESCE(SUM(p.amount),0) AS total FROM payments p GROUP BY month ORDER BY month ASC LIMIT 12");
+    $stmt = $pdo->query("SELECT strftime('%Y-%m', p.creado_en) AS mes, COALESCE(SUM(p.monto),0) AS total FROM pagos p GROUP BY mes ORDER BY mes ASC LIMIT 12");
     echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
 http_response_code(404);
-echo json_encode(['error' => 'Acci�n no v�lida'], JSON_INVALID_UTF8_SUBSTITUTE);
+echo json_encode(['error' => 'Acci\ufffdn no v\ufffdlida'], JSON_INVALID_UTF8_SUBSTITUTE);

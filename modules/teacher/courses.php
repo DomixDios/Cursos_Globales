@@ -12,13 +12,13 @@
             <h5 class="fw-semibold mb-3">Nuevo Curso</h5>
             <form id="courseForm">
                 <input type="hidden" name="id" value="0">
-                <div class="mb-3"><label class="form-label small">Título</label><input type="text" name="title" class="form-control" required></div>
-                <div class="mb-3"><label class="form-label small">Descripción corta</label><textarea name="short_description" class="form-control" rows="2"></textarea></div>
-                <div class="mb-3"><label class="form-label small">Descripción completa</label><textarea name="description" class="form-control" rows="4"></textarea></div>
+                <div class="mb-3"><label class="form-label small">Tï¿½tulo</label><input type="text" name="title" class="form-control" required></div>
+                <div class="mb-3"><label class="form-label small">Descripciï¿½n corta</label><textarea name="short_description" class="form-control" rows="2"></textarea></div>
+                <div class="mb-3"><label class="form-label small">Descripciï¿½n completa</label><textarea name="description" class="form-control" rows="4"></textarea></div>
                 <div class="row mb-3">
                     <div class="col"><label class="form-label small">Precio</label><input type="number" name="price" class="form-control" step="0.01" value="0"></div>
-                    <div class="col"><label class="form-label small">Nivel</label><select name="level" class="form-select"><option value="beginner">Principiante</option><option value="intermediate">Intermedio</option><option value="advanced">Avanzado</option></select></div>
-                    <div class="col"><label class="form-label small">Categoría</label><select name="category_id" class="form-select" id="catSelect"></select></div>
+                    <div class="col"><label class="form-label small">Nivel</label><select name="level" class="form-select"><option value="principiante">Principiante</option><option value="intermedio">Intermedio</option><option value="avanzado">Avanzado</option></select></div>
+                    <div class="col"><label class="form-label small">Categorï¿½a</label><select name="category_id" class="form-select" id="catSelect"></select></div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">Guardar</button>
             </form>

@@ -10,9 +10,9 @@
         </a>
         <div class="d-flex align-items-center gap-2">
             <?php if ($user): ?>
-                <span class="text-muted small d-none d-md-inline"><?= e($user['full_name']) ?></span>
+                <span class="text-muted small d-none d-md-inline"><?= e($user['nombre_completo']) ?></span>
                 <span class="badge bg-light text-dark d-none d-md-inline">
-                    <?= ucfirst(e($user['role'])) ?>
+                    <?= ucfirst(e($user['rol'])) ?>
                 </span>
                 <a href="<?= BASE_URL ?>/index.php?page=logout" class="btn btn-sm btn-outline-secondary">
                     <i class="bi bi-box-arrow-right"></i> Salir
