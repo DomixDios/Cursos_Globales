@@ -18,7 +18,7 @@ $(function () {
                 }
             })
             .fail(function () {
-                errorEl.text('Error de conexión. Intenta de nuevo.').removeClass('d-none');
+                errorEl.text('Error de conexi\u00f3n. Intenta de nuevo.').removeClass('d-none');
             })
             .always(function () {
                 btn.prop('disabled', false);

@@ -48,10 +48,10 @@ function renderSidebarItems(array $items, string $currentPage): void
     </nav>
 </aside>
 
-<!-- Offcanvas para m�vil (se abre con el bot�n hamburguesa) -->
+<!-- Offcanvas para m?vil (se abre con el bot?n hamburguesa) -->
 <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarCanvas">
     <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-semibold">Navegaci�n</h5>
+        <h5 class="offcanvas-title fw-semibold">Navegación</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body p-0">

@@ -4,7 +4,7 @@ $extraCss = '<style>.hero-section { padding: 6rem 0; }</style>';
 ?>
 <section class="hero-section">
     <div class="container">
-        <h1 class="display-4 fw-bold">Aprende sin límites</h1>
+        <h1 class="display-4 fw-bold">Aprende sin l&iacute;mites</h1>
         <p class="lead text-muted mx-auto mb-4" style="max-width:600px;">
             Cursos digitales creados por expertos para impulsar tu carrera.
         </p>

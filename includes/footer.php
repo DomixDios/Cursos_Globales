@@ -9,7 +9,7 @@
                             <input type="email" name="email" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small">Contrase�a</label>
+                            <label class="form-label small">Contraseña</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
                         <div id="loginError" class="alert alert-danger d-none small py-2"></div>
@@ -19,8 +19,8 @@
                         </button>
                     </form>
                     <p class="text-center small mt-3 mb-0">
-                        �No tienes cuenta?
-                        <a href="<?= BASE_URL ?>/index.php?page=register">Reg�strate</a>
+                        &iquest;No tienes cuenta?
+                        <a href="<?= BASE_URL ?>/index.php?page=register">Regístrate</a>
                     </p>
                 </div>
             </div>
