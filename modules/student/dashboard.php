@@ -1,5 +1,5 @@
 <?php $user = currentUser(); $pageTitle = 'Dashboard'; ?>
-<h2 class="fw-bold mb-4">Bienvenido, <?= e($user['full_name']) ?></h2>
+<h2 class="fw-bold mb-4">Bienvenido, <?= e($user['nombre_completo']) ?></h2>
 <div class="row g-4">
     <div class="col-md-4">
         <div class="card text-center p-3">

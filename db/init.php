@@ -3,7 +3,7 @@ echo "=== Inicializando Cursos Globales ===\n\n";
 
 $schema = file_get_contents(__DIR__ . '/schema.sql');
 if ($schema === false) {
-    die("ERROR: No se encontró schema.sql\n");
+    die("ERROR: No se encontr\ufffdo schema.sql\n");
 }
 
 require_once __DIR__ . '/../config/database.php';
@@ -22,13 +22,13 @@ foreach ($statements as $stmt) {
     }
 }
 
-echo "  ? Tablas creadas exitosamente\n\n";
+echo "  \u{1f4be} Tablas creadas exitosamente\n\n";
 
 require __DIR__ . '/seed.php';
 
-echo "\n=== Inicialización completada ===\n";
+echo "\n=== Inicializaci\ufffdn completada ===\n";
 echo "  Usuarios de prueba (password: password123):\n";
 echo "    - admin@cursosglobales.com    (admin)\n";
-echo "    - mod@cursosglobales.com      (moderator)\n";
-echo "    - carlos@cursosglobales.com   (teacher)\n";
-echo "    - maria@cursosglobales.com    (student)\n";
+echo "    - mod@cursosglobales.com      (moderador)\n";
+echo "    - carlos@cursosglobales.com   (profesor)\n";
+echo "    - maria@cursosglobales.com    (estudiante)\n";

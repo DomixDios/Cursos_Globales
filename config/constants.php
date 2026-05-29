@@ -2,14 +2,14 @@
 define('APP_NAME', 'Cursos Globales');
 
 define('ROLE_ADMIN',     'admin');
-define('ROLE_MODERATOR', 'moderator');
-define('ROLE_TEACHER',   'teacher');
-define('ROLE_STUDENT',   'student');
+define('ROLE_MODERATOR', 'moderador');
+define('ROLE_TEACHER',   'profesor');
+define('ROLE_STUDENT',   'estudiante');
 
-define('COURSE_DRAFT',     'draft');
-define('COURSE_PENDING',   'pending');
-define('COURSE_APPROVED',  'approved');
-define('COURSE_REJECTED',  'rejected');
-define('COURSE_PUBLISHED', 'published');
+define('COURSE_DRAFT',     'borrador');
+define('COURSE_PENDING',   'pendiente');
+define('COURSE_APPROVED',  'aprobado');
+define('COURSE_REJECTED',  'rechazado');
+define('COURSE_PUBLISHED', 'publicado');
 
 define('BASE_URL', '');
