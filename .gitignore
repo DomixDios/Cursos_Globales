@@ -1,0 +1,8 @@
+storage/*.db
+assets/uploads/courses/*
+assets/uploads/avatars/*
+!assets/uploads/courses/.gitkeep
+!assets/uploads/avatars/.gitkeep
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteBase /Cursos_Globales/
+
+# Si no es un archivo real, redirigir a index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]

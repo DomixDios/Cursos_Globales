@@ -1,0 +1,127 @@
+:root {
+    --color-bg: #f8f9fa;
+    --color-card: #ffffff;
+    --color-primary: #0d6efd;
+    --color-text: #1a1a2e;
+    --color-muted: #6c757d;
+    --sidebar-width: 250px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background: var(--color-bg);
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--color-text);
+    line-height: 1.7;
+}
+
+/* -- Layout -- */
+.main-content {
+    padding: 2rem;
+    min-height: calc(100vh - 72px);
+    transition: margin-left 0.3s ease;
+}
+
+@media (min-width: 992px) {
+    .main-content {
+        margin-left: var(--sidebar-width);
+    }
+}
+
+/* -- Cards minimalistas -- */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding: 1.25rem 1.5rem 0.75rem;
+    font-weight: 600;
+}
+
+.card-body { padding: 1.5rem; }
+
+/* -- Botones -- */
+.btn { border-radius: 8px; padding: 0.5rem 1.25rem; font-weight: 500; }
+.btn-sm { padding: 0.35rem 0.85rem; }
+
+/* -- Tipografía -- */
+h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+.display-lead { font-size: 1.1rem; color: var(--color-muted); }
+
+/* -- Sidebar -- */
+.list-group-item {
+    padding: 0.9rem 1.25rem;
+    border-left: 3px solid transparent;
+    font-size: 0.95rem;
+}
+
+.list-group-item.active {
+    background: var(--color-primary);
+    border-left-color: #0a58ca;
+}
+
+.offcanvas {
+    border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+/* -- Progress bar -- */
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background: #e9ecef;
+}
+.progress-bar { border-radius: 4px; }
+
+/* -- Badges -- */
+.badge { font-weight: 500; padding: 0.35em 0.65em; }
+
+/* -- Tablas limpias -- */
+.table th { border-top: none; font-weight: 600; color: var(--color-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.03em; }
+
+/* -- Formularios -- */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    padding: 0.6rem 0.9rem;
+}
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.15);
+    border-color: var(--color-primary);
+}
+
+/* -- Landing especial -- */
+.hero-section {
+    padding: 5rem 0;
+    text-align: center;
+}
+.hero-section h1 { font-size: 2.8rem; margin-bottom: 1rem; }
+
+/* -- Curso card -- */
+.course-card .card-img-top {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+.course-card .card-body { padding: 1.25rem; }
+.course-card .card-title { font-size: 1.05rem; margin-bottom: 0.5rem; }
+
+/* -- Animaciones -- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease forwards; }
