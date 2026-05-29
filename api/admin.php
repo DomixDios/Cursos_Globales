@@ -53,6 +53,10 @@ if ($action === 'user-save' && $isAdmin) {
 
 if ($action === 'user-toggle' && $isAdmin) {
     $id = (int)($_POST['id'] ?? 0);
+    if ($id === (int)$_SESSION['user_id']) {
+        echo json_encode(['success' => false, 'error' => 'No puedes desactivarte a ti mismo']);
+        exit;
+    }
     $pdo->prepare('UPDATE usuarios SET activo = CASE WHEN activo = 1 THEN 0 ELSE 1 END, actualizado_en = datetime() WHERE id = ?')->execute([$id]);
     echo json_encode(['success' => true]);
     exit;
