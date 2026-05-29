@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user) login($_POST['email'], $_POST['password']);
         redirect(BASE_URL . '/index.php?page=student-dashboard');
     } catch (PDOException $e) {
-        $error = 'El email ya est� registrado.';
+        $error = 'El email ya est? registrado.';
     }
 }
 ?>
@@ -34,10 +34,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="email" name="email" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label class="form-label small">Contrase�a</label>
+            <label class="form-label small">Contraseña</label>
             <input type="password" name="password" class="form-control" minlength="6" required>
         </div>
         <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-        <p class="text-center small mt-3">�Ya tienes cuenta? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Ingresa</a></p>
+        <p class="text-center small mt-3">?Ya tienes cuenta? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Ingresa</a></p>
     </form>
 </section>

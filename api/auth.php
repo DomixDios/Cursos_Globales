@@ -19,4 +19,4 @@ if ($action === 'me') {
 }
 
 http_response_code(404);
-echo json_encode(['error' => 'Acción no válida']);
+echo json_encode(['error' => "Acci\u{00f3}n no v\u{00e1}lida"]);
