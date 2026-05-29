@@ -109,7 +109,7 @@ $(function () {
                         '<td>' + (c.course_count || 0) + '</td>' +
                         '<td>' +
                         '  <button class="btn btn-sm btn-outline-primary edit-cat" data-id="' + c.id + '" data-name="' + c.name + '" data-slug="' + c.slug + '" data-desc="' + (c.description || '') + '"><i class="bi bi-pencil"></i></button>' +
-                        '  <button class="btn btn-sm btn-outline-' + (c.is_active == 1 ? 'secondary' : 'success') + ' toggle-cat" data-id="' + c.id + '"><i class="bi bi-' + (c.is_active == 1 ? 'pause' : 'play') + '"></i></button>' +
+                        '  <button class="btn btn-sm btn-outline-danger delete-cat" data-id="' + c.id + '" data-name="' + c.name + '"><i class="bi bi-trash"></i></button>' +
                         '</td>' +
                         '</tr>';
                 });
@@ -153,10 +153,11 @@ $(function () {
             .fail(function () { showError('Error al guardar categoria'); });
     });
 
-    $(document).on('click', '.toggle-cat', function () {
-        $.post(API + '?action=category-toggle', { id: $(this).data('id') })
+    $(document).on('click', '.delete-cat', function () {
+        if (!confirm('Eliminar la categoria "' + $(this).data('name') + '"?\nSe ocultara de la plataforma.')) return;
+        $.post(API + '?action=category-delete', { id: $(this).data('id') })
             .done(function () { loadCategories(); })
-            .fail(function () { showError('Error al cambiar estado'); });
+            .fail(function () { showError('Error al eliminar categoria'); });
     });
 
     // =====================================================

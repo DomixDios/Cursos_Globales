@@ -82,8 +82,40 @@ if ($action === 'pending-courses') {
 
 // ── Category list ──
 if ($action === 'category-list') {
-    $stmt = $pdo->query("SELECT c.*, (SELECT COUNT(*) FROM courses WHERE category_id = c.id) AS course_count FROM categories c ORDER BY c.name ASC");
+    $stmt = $pdo->query("SELECT c.*, (SELECT COUNT(*) FROM courses WHERE category_id = c.id) AS course_count FROM categories c WHERE c.is_active = 1 ORDER BY c.name ASC");
     echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
+    exit;
+}
+
+// ── Save category ──
+if ($action === 'category-save') {
+    $id   = (int)($_POST['id'] ?? 0);
+    $name = $_POST['name'] ?? '';
+    $slug = $_POST['slug'] ?? '';
+    $desc = $_POST['description'] ?? '';
+
+    if ($id) {
+        $pdo->prepare('UPDATE categories SET name = ?, slug = ?, description = ? WHERE id = ?')->execute([$name, $slug, $desc, $id]);
+    } else {
+        $pdo->prepare('INSERT OR IGNORE INTO categories (name, slug, description) VALUES (?, ?, ?)')->execute([$name, $slug, $desc]);
+    }
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// ── Toggle category active ──
+if ($action === 'category-toggle') {
+    $id = (int)($_POST['id'] ?? 0);
+    $pdo->prepare('UPDATE categories SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END WHERE id = ?')->execute([$id]);
+    echo json_encode(['success' => true]);
+    exit;
+}
+
+// ── Delete category (logical) ──
+if ($action === 'category-delete') {
+    $id = (int)($_POST['id'] ?? 0);
+    $pdo->prepare('UPDATE categories SET is_active = 0 WHERE id = ?')->execute([$id]);
+    echo json_encode(['success' => true]);
     exit;
 }
 
