@@ -4,12 +4,17 @@ require_once __DIR__ . '/../config/session.php';
 require_once __DIR__ . '/../config/auth.php';
 header('Content-Type: application/json');
 
-if (!isLoggedIn() || !in_array(currentUserRole(), ['admin','moderador'])) {
-    http_response_code(403);     echo json_encode(['error' => 'No autorizado'], JSON_INVALID_UTF8_SUBSTITUTE); exit;
-}
-
 $pdo = getDB();
 $action = $_GET['action'] ?? '';
+
+$allowedRoles = ['admin','moderador'];
+if (in_array($action, ['category-list'], true)) {
+    $allowedRoles[] = 'profesor';
+    $allowedRoles[] = 'estudiante';
+}
+if (!isLoggedIn() || !in_array(currentUserRole(), $allowedRoles)) {
+    http_response_code(403);     echo json_encode(['error' => 'No autorizado'], JSON_INVALID_UTF8_SUBSTITUTE); exit;
+}
 $isAdmin = currentUserRole() === 'admin';
 
 if ($action === 'dashboard') {

@@ -6,3 +6,5 @@ assets/uploads/avatars/*
 .DS_Store
 Thumbs.db
 *.log
+# Archivos de configuración local
+config/config.local.php
