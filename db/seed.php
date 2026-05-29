@@ -69,6 +69,13 @@ if (!$existing->fetch()) {
         ->execute([$mod2, 'Clases y objetos en PHP', 'Definicion de clases, propiedades, metodos y el operador ->.', 'https://www.youtube.com/embed/dummy3', 25, 'video', 1]);
 
     echo "  Curso demo creado: 'PHP Moderno desde Cero'\n";
+
+    $studentId = $pdo->query("SELECT id FROM usuarios WHERE email = 'maria@cursosglobales.com'")->fetchColumn();
+    if ($studentId) {
+        $pdo->prepare('INSERT OR IGNORE INTO inscripciones (usuario_id, curso_id) VALUES (?, ?)')
+            ->execute([$studentId, $courseId]);
+        echo "  Estudiante Maria inscrita al curso demo.\n";
+    }
 }
 
 echo "\nBase de datos poblada exitosamente.\n";

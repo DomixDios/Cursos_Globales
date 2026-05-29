@@ -1,10 +1,6 @@
 <?php $user = currentUser(); ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom py-3 px-4">
     <div class="container-fluid">
-        <button class="btn btn-link d-lg-none me-2 p-0" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#sidebarCanvas">
-            <i class="bi bi-list fs-3"></i>
-        </button>
         <a class="navbar-brand fw-bold fs-4" href="<?= BASE_URL ?>">
             <i class="bi bi-book me-2"></i><?= APP_NAME ?>
         </a>

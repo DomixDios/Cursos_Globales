@@ -30,5 +30,44 @@ if ($action === 'complete') {
     exit;
 }
 
+if ($action === 'course-progress') {
+    $courseId = (int)($_GET['course_id'] ?? 0);
+    $stmt = $pdo->prepare('SELECT e.id AS inscripcion_id, e.progreso, e.completado_en
+        FROM inscripciones e WHERE e.usuario_id = ? AND e.curso_id = ?');
+    $stmt->execute([$userId, $courseId]);
+    $enrollment = $stmt->fetch();
+    if (!$enrollment) { http_response_code(404); echo json_encode(['error' => 'No inscrito']); exit; }
+
+    $modulos = $pdo->prepare('SELECT id, titulo FROM modulos WHERE curso_id = ? ORDER BY orden');
+    $modulos->execute([$courseId]);
+    $modulosData = $modulos->fetchAll();
+
+    $totalClases = 0;
+    $completedClases = 0;
+    foreach ($modulosData as &$mod) {
+        $clases = $pdo->prepare('SELECT id, titulo, duracion FROM clases WHERE modulo_id = ? ORDER BY orden');
+        $clases->execute([$mod['id']]);
+        $mod['clases'] = $clases->fetchAll();
+        foreach ($mod['clases'] as &$clase) {
+            $prog = $pdo->prepare('SELECT completado, completado_en FROM progreso_clases WHERE inscripcion_id = ? AND clase_id = ?');
+            $prog->execute([$enrollment['inscripcion_id'], $clase['id']]);
+            $clase['completado'] = $prog->fetch();
+            if ($clase['completado']) $completedClases++;
+            $totalClases++;
+        }
+        unset($clase);
+    }
+    unset($mod);
+
+    echo json_encode([
+        'enrollment'     => $enrollment,
+        'modulos'        => $modulosData,
+        'total_clases'   => $totalClases,
+        'completadas'    => $completedClases,
+        'progreso'       => $enrollment['progreso'],
+    ]);
+    exit;
+}
+
 http_response_code(404);
 echo json_encode(['error' => 'Acci\ufffdn no v\ufffdlida']);
