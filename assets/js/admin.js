@@ -88,7 +88,10 @@ $(function () {
     $(document).on('click', '.toggle-user', function () {
         if (!confirm('Cambiar estado de este usuario?')) return;
         $.post(API + '?action=user-toggle', { id: $(this).data('id') })
-            .done(function () { loadUsers(); })
+            .done(function (r) {
+                if (r.success) { loadUsers(); }
+                else { showError(r.error || 'Error al cambiar estado'); }
+            })
             .fail(function () { showError('Error al cambiar estado'); });
     });
 
