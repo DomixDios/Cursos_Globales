@@ -55,27 +55,54 @@ body {
 .btn { border-radius: 8px; padding: 0.5rem 1.25rem; font-weight: 500; }
 .btn-sm { padding: 0.35rem 0.85rem; }
 
-/* -- Tipografía -- */
+/* -- Tipografï¿½a -- */
 h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
 h1 { font-size: 2rem; }
 h2 { font-size: 1.5rem; }
 h3 { font-size: 1.25rem; }
 .display-lead { font-size: 1.1rem; color: var(--color-muted); }
 
-/* -- Sidebar -- */
-.list-group-item {
+/* -- Sidebar escritorio (fijo a la izquierda) -- */
+.sidebar-desktop {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - 72px);
+    background: #fff;
+    border-right: 1px solid rgba(0,0,0,0.05);
+    overflow-y: auto;
+    padding-top: 0.5rem;
+    z-index: 1000;
+}
+
+.sidebar-desktop .list-group-item {
     padding: 0.9rem 1.25rem;
     border-left: 3px solid transparent;
     font-size: 0.95rem;
+    border-radius: 0;
 }
 
-.list-group-item.active {
+.sidebar-desktop .list-group-item.active {
     background: var(--color-primary);
     border-left-color: #0a58ca;
 }
 
+/* -- Offcanvas mï¿½vil -- */
 .offcanvas {
     border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+.offcanvas .list-group-item {
+    padding: 0.9rem 1.25rem;
+    border-left: 3px solid transparent;
+    font-size: 0.95rem;
+    border-radius: 0;
+}
+
+.offcanvas .list-group-item.active {
+    background: var(--color-primary);
+    border-left-color: #0a58ca;
 }
 
 /* -- Progress bar -- */

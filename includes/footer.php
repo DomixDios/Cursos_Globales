@@ -9,7 +9,7 @@
                             <input type="email" name="email" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small">Contraseña</label>
+                            <label class="form-label small">Contraseï¿½a</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
                         <div id="loginError" class="alert alert-danger d-none small py-2"></div>
@@ -19,14 +19,15 @@
                         </button>
                     </form>
                     <p class="text-center small mt-3 mb-0">
-                        ¿No tienes cuenta?
-                        <a href="<?= BASE_URL ?>/index.php?page=register">Regístrate</a>
+                        ï¿½No tienes cuenta?
+                        <a href="<?= BASE_URL ?>/index.php?page=register">Regï¿½strate</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
+    <script>var BASE_URL = '<?= BASE_URL ?>';</script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?= BASE_URL ?>/assets/js/main.js"></script>

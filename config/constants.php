@@ -12,4 +12,4 @@ define('COURSE_APPROVED',  'approved');
 define('COURSE_REJECTED',  'rejected');
 define('COURSE_PUBLISHED', 'published');
 
-define('BASE_URL', '/Cursos_Globales');
+define('BASE_URL', '');
