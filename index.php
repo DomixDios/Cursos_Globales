@@ -28,6 +28,9 @@ $routeMap = [
     'categories'        => 'modules/admin/categories.php',
     'pending-courses'   => 'modules/admin/pending-courses.php',
     'stats'             => 'modules/admin/stats.php',
+    'moderator-dashboard' => 'modules/moderator/dashboard.php',
+    'moderator-pending'   => 'modules/moderator/pending-courses.php',
+    'moderator-categories'=> 'modules/moderator/categories.php',
 ];
 
 $roleMap = [
@@ -43,6 +46,9 @@ $roleMap = [
     'categories'        => [ROLE_ADMIN, ROLE_MODERATOR],
     'pending-courses'   => [ROLE_ADMIN, ROLE_MODERATOR],
     'stats'             => [ROLE_ADMIN],
+    'moderator-dashboard' => [ROLE_MODERATOR],
+    'moderator-pending'   => [ROLE_MODERATOR],
+    'moderator-categories'=> [ROLE_MODERATOR],
 ];
 
 if ($page === 'logout') {

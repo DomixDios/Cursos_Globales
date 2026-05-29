@@ -11,9 +11,9 @@ $menuMap = [
         ['label' => 'Estadisticas',  'icon' => 'bi-bar-chart',    'page' => 'stats'],
     ],
     'moderator' => [
-        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
-        ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'pending-courses'],
-        ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'categories'],
+        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'moderator-dashboard'],
+        ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'moderator-pending'],
+        ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'moderator-categories'],
     ],
     'teacher' => [
         ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'teacher-dashboard'],
