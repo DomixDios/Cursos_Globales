@@ -2,6 +2,19 @@ $(function () {
 
     var API = BASE_URL + '/api/admin.php';
 
+    // Global AJAX error handler
+    function showError(msg) {
+        console.error('Admin API:', msg);
+        var el = $('#adminError');
+        if (!el.length) {
+            el = $('<div id="adminError" class="alert alert-danger alert-dismissible fade show small py-2" role="alert" style="position:fixed;top:80px;right:20px;z-index:9999;max-width:400px;"></div>').appendTo('body');
+            el.append('<button type="button" class="btn-close" data-bs-dismiss="alert"></button>');
+        }
+        el.html('<i class="bi bi-exclamation-triangle me-1"></i>' + msg + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>');
+        el.removeClass('d-none');
+        setTimeout(function () { el.addClass('d-none'); }, 5000);
+    }
+
     // =====================================================
     // DASHBOARD
     // =====================================================
@@ -12,7 +25,8 @@ $(function () {
                 $('#aCourses').text(d.courses || 0);
                 $('#aPending').text(d.pending || 0);
                 $('#aRevenue').text('$' + parseFloat(d.revenue || 0).toFixed(2));
-            });
+            })
+            .fail(function () { showError('Error al cargar estadisticas'); });
     }
     if ($('#aUsers').length) loadDashboard();
 
@@ -20,6 +34,7 @@ $(function () {
     // USUARIOS
     // =====================================================
     function loadUsers() {
+        $('#usersTable').html('<tr><td colspan="6" class="text-center text-muted">Cargando...</td></tr>');
         $.getJSON(API, { action: 'users' })
             .done(function (users) {
                 var html = '';
@@ -37,7 +52,8 @@ $(function () {
                         '</tr>';
                 });
                 $('#usersTable').html(html);
-            });
+            })
+            .fail(function () { showError('Error al cargar usuarios'); });
     }
     if ($('#usersTable').length) loadUsers();
 
@@ -65,19 +81,22 @@ $(function () {
         $.post(API + '?action=user-save', $(this).serialize())
             .done(function (r) {
                 if (r.success) { $('#userModal').modal('hide'); loadUsers(); }
-            });
+            })
+            .fail(function () { showError('Error al guardar usuario'); });
     });
 
     $(document).on('click', '.toggle-user', function () {
         if (!confirm('Cambiar estado de este usuario?')) return;
         $.post(API + '?action=user-toggle', { id: $(this).data('id') })
-            .done(function () { loadUsers(); });
+            .done(function () { loadUsers(); })
+            .fail(function () { showError('Error al cambiar estado'); });
     });
 
     // =====================================================
     // CATEGORIAS
     // =====================================================
     function loadCategories() {
+        $('#categoriesTable').html('<tr><td colspan="6" class="text-center text-muted">Cargando...</td></tr>');
         $.getJSON(API, { action: 'category-list' })
             .done(function (cats) {
                 var html = '';
@@ -95,7 +114,6 @@ $(function () {
                         '</tr>';
                 });
                 $('#categoriesTable').html(html);
-                // Also populate category selects
                 var opts = '<option value="">Seleccionar...</option>';
                 $.each(cats, function (i, c) {
                     if (c.is_active) opts += '<option value="' + c.id + '">' + c.name + '</option>';
@@ -104,13 +122,14 @@ $(function () {
                     var val = $(this).val();
                     $(this).html(opts).val(val);
                 });
-            });
+            })
+            .fail(function () { showError('Error al cargar categorias'); });
     }
     if ($('#categoriesTable').length) loadCategories();
 
     $(document).on('click', '.edit-cat', function () {
         var btn = $(this);
-        $('#categoryModalLabel').text('Editar Categoría');
+        $('#categoryModalLabel').text('Editar Categoria');
         $('#catId').val(btn.data('id'));
         $('#catName').val(btn.data('name'));
         $('#catSlug').val(btn.data('slug'));
@@ -119,7 +138,7 @@ $(function () {
     });
 
     $(document).on('click', '#newCatBtn', function () {
-        $('#categoryModalLabel').text('Nueva Categoría');
+        $('#categoryModalLabel').text('Nueva Categoria');
         $('#catForm')[0].reset();
         $('#catId').val(0);
         $('#categoryModal').modal('show');
@@ -130,18 +149,21 @@ $(function () {
         $.post(API + '?action=category-save', $(this).serialize())
             .done(function (r) {
                 if (r.success) { $('#categoryModal').modal('hide'); loadCategories(); }
-            });
+            })
+            .fail(function () { showError('Error al guardar categoria'); });
     });
 
     $(document).on('click', '.toggle-cat', function () {
         $.post(API + '?action=category-toggle', { id: $(this).data('id') })
-            .done(function () { loadCategories(); });
+            .done(function () { loadCategories(); })
+            .fail(function () { showError('Error al cambiar estado'); });
     });
 
     // =====================================================
     // CURSOS PENDIENTES
     // =====================================================
     function loadPending() {
+        $('#pendingCoursesTable').html('<tr><td colspan="4" class="text-center text-muted">Cargando...</td></tr>');
         $.getJSON(API, { action: 'pending-courses' })
             .done(function (courses) {
                 var html = '';
@@ -157,25 +179,30 @@ $(function () {
                         '</tr>';
                 });
                 $('#pendingCoursesTable').html(html);
-            });
+                // Reload dashboard stats if present
+                if ($('#aPending').length) loadDashboard();
+            })
+            .fail(function () { showError('Error al cargar cursos pendientes'); });
     }
     if ($('#pendingCoursesTable').length) loadPending();
 
     $(document).on('click', '.approve-course', function () {
-        if (!confirm('¿Aprobar este curso?')) return;
+        if (!confirm('Aprobar este curso?')) return;
         $.post(API + '?action=approve', { id: $(this).data('id') })
-            .done(function () { loadPending(); loadDashboard(); });
+            .done(function () { loadPending(); })
+            .fail(function () { showError('Error al aprobar curso'); });
     });
 
     $(document).on('click', '.reject-course', function () {
         var id = $(this).data('id');
         var reason = prompt('Motivo del rechazo (opcional):');
         $.post(API + '?action=reject', { id: id, reason: reason || '' })
-            .done(function () { loadPending(); loadDashboard(); });
+            .done(function () { loadPending(); })
+            .fail(function () { showError('Error al rechazar curso'); });
     });
 
     // =====================================================
-    // ESTADISTICAS (placeholder para Chart.js)
+    // ESTADISTICAS
     // =====================================================
     function loadStats() {
         if (!$('#usersChart').length) return;
@@ -183,7 +210,7 @@ $(function () {
         $.getJSON(API, { action: 'stats-users' })
             .done(function (data) {
                 if (typeof Chart === 'undefined') {
-                    $('#usersChart').parent().html('<p class="text-muted text-center py-4">Instala Chart.js para ver las gráficas</p>');
+                    $('#usersChart').parent().html('<p class="text-muted text-center py-4">Instala Chart.js para ver las graficas</p>');
                     return;
                 }
                 new Chart(document.getElementById('usersChart'), {
@@ -193,7 +220,8 @@ $(function () {
                         datasets: [{ label: 'Usuarios', data: data.map(function (d) { return d.total; }), backgroundColor: '#0d6efd' }]
                     }
                 });
-            });
+            })
+            .fail(function () { showError('Error al cargar estadisticas'); });
 
         $.getJSON(API, { action: 'stats-revenue' })
             .done(function (data) {
@@ -205,10 +233,10 @@ $(function () {
                         datasets: [{ label: 'Ingresos', data: data.map(function (d) { return d.total; }), borderColor: '#198754', fill: false }]
                     }
                 });
-            });
+            })
+            .fail(function () { showError('Error al cargar ingresos'); });
     }
     if ($('#usersChart').length) {
-        // Load Chart.js if not present
         if (typeof Chart === 'undefined') {
             $.getScript('https://cdn.jsdelivr.net/npm/chart.js', loadStats);
         } else {

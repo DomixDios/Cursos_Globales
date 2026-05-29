@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/auth.php';
 header('Content-Type: application/json');
 
 if (!isLoggedIn() || !in_array(currentUserRole(), ['admin','moderator'])) {
-    http_response_code(403); echo json_encode(['error' => 'No autorizado']); exit;
+    http_response_code(403);     echo json_encode(['error' => 'No autorizado'], JSON_INVALID_UTF8_SUBSTITUTE); exit;
 }
 
 $pdo = getDB();
@@ -26,7 +26,7 @@ if ($action === 'dashboard') {
 // ── List users ──
 if ($action === 'users') {
     $stmt = $pdo->query('SELECT id, full_name, email, role, is_active, created_at FROM users ORDER BY created_at DESC');
-    echo json_encode($stmt->fetchAll());
+    echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
@@ -76,54 +76,30 @@ if ($action === 'approve' || $action === 'reject') {
 // ── Pending courses ──
 if ($action === 'pending-courses') {
     $stmt = $pdo->query("SELECT c.*, u.full_name AS teacher_name FROM courses c JOIN users u ON u.id = c.teacher_id WHERE c.status = 'pending' ORDER BY c.created_at ASC");
-    echo json_encode($stmt->fetchAll());
+    echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
 // ── Category list ──
 if ($action === 'category-list') {
     $stmt = $pdo->query("SELECT c.*, (SELECT COUNT(*) FROM courses WHERE category_id = c.id) AS course_count FROM categories c ORDER BY c.name ASC");
-    echo json_encode($stmt->fetchAll());
-    exit;
-}
-
-// ── Save category ──
-if ($action === 'category-save') {
-    $id   = (int)($_POST['id'] ?? 0);
-    $name = $_POST['name'] ?? '';
-    $slug = $_POST['slug'] ?? '';
-    $desc = $_POST['description'] ?? '';
-
-    if ($id) {
-        $pdo->prepare('UPDATE categories SET name = ?, slug = ?, description = ? WHERE id = ?')->execute([$name, $slug, $desc, $id]);
-    } else {
-        $pdo->prepare('INSERT OR IGNORE INTO categories (name, slug, description) VALUES (?, ?, ?)')->execute([$name, $slug, $desc]);
-    }
-    echo json_encode(['success' => true]);
-    exit;
-}
-
-// ── Toggle category active ──
-if ($action === 'category-toggle') {
-    $id = (int)($_POST['id'] ?? 0);
-    $pdo->prepare('UPDATE categories SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END WHERE id = ?')->execute([$id]);
-    echo json_encode(['success' => true]);
+    echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
 // ── Stats: users per month ──
 if ($action === 'stats-users') {
     $stmt = $pdo->query("SELECT strftime('%Y-%m', created_at) AS month, COUNT(*) AS total FROM users GROUP BY month ORDER BY month ASC LIMIT 12");
-    echo json_encode($stmt->fetchAll());
+    echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
 // ── Stats: revenue per month ──
 if ($action === 'stats-revenue') {
     $stmt = $pdo->query("SELECT strftime('%Y-%m', p.created_at) AS month, COALESCE(SUM(p.amount),0) AS total FROM payments p GROUP BY month ORDER BY month ASC LIMIT 12");
-    echo json_encode($stmt->fetchAll());
+    echo json_encode($stmt->fetchAll(), JSON_INVALID_UTF8_SUBSTITUTE);
     exit;
 }
 
 http_response_code(404);
-echo json_encode(['error' => 'Acci�n no v�lida']);
+echo json_encode(['error' => 'Acci�n no v�lida'], JSON_INVALID_UTF8_SUBSTITUTE);
