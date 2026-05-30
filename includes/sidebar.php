@@ -21,8 +21,11 @@ $menuMap = [
         ['label' => 'Ganancias',     'icon' => 'bi-cash-stack',   'page' => 'earnings'],
     ],
     'student' => [
-        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'student-dashboard'],
-        ['label' => 'Mis Cursos',    'icon' => 'bi-book',         'page' => 'my-courses'],
+        ['label' => 'Panel',          'icon' => 'bi-speedometer2',   'page' => 'student-dashboard'],
+        ['label' => 'Mis Cursos',    'icon' => 'bi-book',           'page' => 'my-courses'],
+        ['label' => 'Progreso',       'icon' => 'bi-graph-up-arrow', 'page' => 'progress'],
+        ['label' => 'Certificados',   'icon' => 'bi-patch-check-fill','page' => 'certificates'],
+        ['label' => 'Perfil',         'icon' => 'bi-person-circle',  'page' => 'profile'],
     ],
 ];
 
@@ -41,22 +44,9 @@ function renderSidebarItems(array $items, string $currentPage): void
     <?php endforeach;
 }
 ?>
-<!-- Sidebar para escritorio (siempre visible, fijo) -->
-<aside class="sidebar-desktop d-none d-lg-block">
+<!-- Sidebar fijo izquierdo (visible en todos los tama�os) -->
+<aside class="sidebar-fixed">
     <nav class="list-group list-group-flush">
         <?php renderSidebarItems($items, $currentPage); ?>
     </nav>
 </aside>
-
-<!-- Offcanvas para m?vil (se abre con el bot?n hamburguesa) -->
-<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarCanvas">
-    <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-semibold">Navegación</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-    </div>
-    <div class="offcanvas-body p-0">
-        <nav class="list-group list-group-flush">
-            <?php renderSidebarItems($items, $currentPage); ?>
-        </nav>
-    </div>
-</div>
