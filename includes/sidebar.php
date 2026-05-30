@@ -10,20 +10,11 @@ $menuMap = [
         ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'categories'],
         ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'pending-courses'],
         ['label' => 'Estadisticas',  'icon' => 'bi-bar-chart',    'page' => 'stats'],
-        ['label' => 'Perfil',        'icon' => 'bi-person',       'page' => 'teacher-profile'],
     ],
-<<<<<<< HEAD
-    'moderator' => [
+    'moderador' => [
         ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'moderator-dashboard'],
         ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'moderator-pending'],
         ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'moderator-categories'],
-=======
-    'moderador' => [
-        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
-        ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'pending-courses'],
-        ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'categories'],
-        ['label' => 'Perfil',        'icon' => 'bi-person',       'page' => 'teacher-profile'],
->>>>>>> 9ba13b0 (feat: modulo docente finalizado (Syllabus, Earnings, Profile y parches API))
     ],
     'profesor' => [
         ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'teacher-dashboard'],
@@ -31,19 +22,12 @@ $menuMap = [
         ['label' => 'Ganancias',     'icon' => 'bi-cash-stack',   'page' => 'earnings'],
         ['label' => 'Perfil',        'icon' => 'bi-person',       'page' => 'teacher-profile'],
     ],
-<<<<<<< HEAD
-    'student' => [
+    'estudiante' => [
         ['label' => 'Panel',          'icon' => 'bi-speedometer2',   'page' => 'student-dashboard'],
         ['label' => 'Mis Cursos',    'icon' => 'bi-book',           'page' => 'my-courses'],
         ['label' => 'Progreso',       'icon' => 'bi-graph-up-arrow', 'page' => 'progress'],
         ['label' => 'Certificados',   'icon' => 'bi-patch-check-fill','page' => 'certificates'],
         ['label' => 'Perfil',         'icon' => 'bi-person-circle',  'page' => 'profile'],
-=======
-    'estudiante' => [
-        ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'student-dashboard'],
-        ['label' => 'Mis Cursos',    'icon' => 'bi-book',         'page' => 'my-courses'],
-        ['label' => 'Perfil',        'icon' => 'bi-person',       'page' => 'teacher-profile'],
->>>>>>> 9ba13b0 (feat: modulo docente finalizado (Syllabus, Earnings, Profile y parches API))
     ],
 ];
 
