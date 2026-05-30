@@ -5,6 +5,7 @@ if (!$role) return;
 $menuMap = [
     'admin' => [
         ['label' => 'Panel',          'icon' => 'bi-speedometer2', 'page' => 'admin-dashboard'],
+        ['label' => 'Cursos',        'icon' => 'bi-collection',   'page' => 'admin-courses'],
         ['label' => 'Usuarios',      'icon' => 'bi-people',       'page' => 'users'],
         ['label' => 'Categorias',    'icon' => 'bi-tags',         'page' => 'categories'],
         ['label' => 'Pendientes',    'icon' => 'bi-clock-history','page' => 'pending-courses'],
