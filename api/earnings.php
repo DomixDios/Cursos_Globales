@@ -22,7 +22,7 @@ $stmt->execute([$userId]);
 $payments = $stmt->fetchAll();
 
 $total   = array_sum(array_column($payments, 'ganancias_profesor'));
-$pending = array_sum(array_column(array_filter($payments, fn($p) => !$p['pagado_profesor']), 'ganancias_profesor'));
+$pending = array_sum(array_column(array_filter($payments, function($p) { return !$p['pagado_profesor']; }), 'ganancias_profesor'));
 
 echo json_encode([
     'payments' => $payments,

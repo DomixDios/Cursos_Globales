@@ -12,4 +12,18 @@ define('COURSE_APPROVED',  'aprobado');
 define('COURSE_REJECTED',  'rechazado');
 define('COURSE_PUBLISHED', 'publicado');
 
-define('BASE_URL', '');
+if (!defined('BASE_URL')) {
+    // Intentamos leer la configuración local si existe
+    $localConfig = __DIR__ . '/config.local.php';
+    if (file_exists($localConfig)) {
+        require_once $localConfig;
+    }
+    
+    // Si no se definió en el archivo local, usamos la detección dinámica
+    if (!defined('BASE_URL')) {
+        $requestUri = $_SERVER['REQUEST_URI'];
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        $base = str_replace(basename($scriptName), '', $scriptName);
+        define('BASE_URL', rtrim($base, '/'));
+    }
+}

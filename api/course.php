@@ -36,10 +36,10 @@ if ($action === 'save') {
     ];
     if ($id) {
         $stmt = $pdo->prepare('UPDATE cursos SET titulo=?,slug=?,descripcion_corta=?,descripcion=?,precio=?,nivel=?,categoria_id=?,estado=?,actualizado_en=datetime() WHERE id=? AND profesor_id=?');
-        $stmt->execute([...array_values($data), $id, $userId]);
+        $stmt->execute(array_merge(array_values($data), [$id, $userId]));
     } else {
         $stmt = $pdo->prepare('INSERT INTO cursos (profesor_id,titulo,slug,descripcion_corta,descripcion,precio,nivel,categoria_id,estado) VALUES (?,?,?,?,?,?,?,?,?)');
-        $stmt->execute([$userId, ...array_values($data)]);
+        $stmt->execute(array_merge([$userId], array_values($data)));
         $id = $pdo->lastInsertId();
     }
     echo json_encode(['success' => true, 'id' => $id]);
